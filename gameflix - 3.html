@@ -2,100 +2,139 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gamerflix - Login de Teste</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gameflix Mobile Pro</title>
     <style>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body, html {
             margin: 0; padding: 0;
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             background-color: #000; color: #fff;
-            overflow-x: hidden;
+            height: 100%; overflow: hidden;
         }
+
         .hero {
             height: 100vh;
-            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.9) 100%),
-                        url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1350&q=80'); 
+            background: linear-gradient(to top, rgba(0,0,0,1) 15%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.8) 100%),
+                        url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80'); 
             background-size: cover; background-position: center;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            text-align: center; padding: 0 20px;
+            display: flex; flex-direction: column; justify-content: center; padding: 25px;
         }
-        header {
-            position: absolute; top: 0; width: 100%;
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 25px 50px; box-sizing: border-box;
+
+        .logo { color: #e50914; font-size: 1.8rem; font-weight: 900; position: absolute; top: 25px; left: 25px; letter-spacing: -1.5px; }
+
+        .hero-content { text-align: center; }
+        h1 { font-size: 2.1rem; margin-bottom: 8px; font-weight: 800; line-height: 1.1; }
+        p { font-size: 1.1rem; color: #e6e6e6; margin-bottom: 35px; }
+
+        .email-form {
+            display: flex; flex-direction: column; gap: 14px;
+            width: 100%; max-width: 350px; margin: 0 auto;
         }
-        .logo { color: #e50914; font-size: 2.2rem; font-weight: bold; }
-        .hero-content h1 { font-size: 3.5rem; max-width: 900px; margin-bottom: 0.5rem; font-weight: 900; }
-        .hero-content p { font-size: 1.6rem; margin-bottom: 2rem; }
-        .hero-content h3 { font-weight: 400; font-size: 1.2rem; margin-bottom: 1.5rem; }
-        
-        .email-form { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+
         .email-form input {
-            padding: 20px; width: 450px;
-            border: 1px solid rgba(255,255,255,0.5);
-            background: rgba(0, 0, 0, 0.7); color: #fff;
-            border-radius: 4px; font-size: 1rem;
+            padding: 20px; width: 100%; border: 1px solid #444;
+            background: rgba(0, 0, 0, 0.85); color: #fff;
+            border-radius: 4px; font-size: 1.1rem; transition: 0.3s;
         }
+
+        .email-form input:focus { border-color: #e50914; box-shadow: 0 0 5px rgba(229, 9, 20, 0.5); }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-10px); }
+            40% { transform: translateX(10px); }
+            60% { transform: translateX(-10px); }
+            80% { transform: translateX(10px); }
+        }
+        .shake-input { animation: shake 0.4s ease-in-out; border-color: #ffa00a !important; }
+
         .btn-cta {
             background-color: #e50914; color: white;
-            padding: 20px 30px; font-size: 1.5rem;
-            border: none; border-radius: 4px;
-            cursor: pointer; font-weight: bold; transition: 0.3s;
+            padding: 18px; font-size: 1.2rem; border: none;
+            border-radius: 4px; cursor: pointer; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
+            min-height: 60px;
         }
-        .btn-cta:hover { background-color: #b9090b; }
 
-        /* Estilo para mensagem de erro caso o login esteja errado */
+        .btn-cta:active { transform: scale(0.96); background-color: #b9090b; }
+
+        .spinner {
+            display: none; width: 24px; height: 24px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%; border-top-color: #fff;
+            animation: spin 0.8s linear infinite; margin-left: 15px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
         #msgErro {
-            color: #ffa00a;
-            margin-top: 15px;
-            display: none;
-            font-weight: bold;
-        }
-
-        @media (max-width: 740px) {
-            .hero-content h1 { font-size: 2.2rem; }
-            .email-form input { width: 100%; }
+            color: #ffa00a; font-size: 0.9rem; margin-top: 15px;
+            display: none; font-weight: 600;
         }
     </style>
 </head>
 <body>
 
     <section class="hero">
-        <header>
-            <div class="logo">GAMERFLIX</div>
-            <button style="background: #e50914; color: white; border: none; padding: 7px 15px; border-radius: 3px; font-weight: bold; cursor: pointer;">Entrar</button>
-        </header>
+        <div class="logo">GAMERFLIX</div>
 
         <div class="hero-content">
-            <h1>os melhores jogos do mundo em um so lugar</h1>
-            <p>Acesse os títulos mais épicos do PC e consoles.</p>
-            <h3>coloque abaixo seu loguin de teste</h3>
+            <h1>O jogo começa agora.</h1>
+            <p>Entre com seu acesso exclusivo.</p>
             
             <form class="email-form" id="loginForm">
-                <input type="text" id="userLogin" placeholder="Seu login" required>
-                <button type="submit" class="btn-cta">Vamos lá ></button>
+                <input 
+                    type="email" 
+                    id="userLogin" 
+                    placeholder="Seu login (@testegratis...)" 
+                    required 
+                    inputmode="email" 
+                    autocapitalize="none" 
+                    spellcheck="false"
+                >
+                <button type="submit" id="btnSubmit" class="btn-cta">
+                    <span id="btnText">VAMOS LÁ</span>
+                    <div class="spinner" id="loader"></div>
+                </button>
             </form>
-            <div id="msgErro">Login incorreto. Tente novamente!</div>
+            <div id="msgErro">Login incorreto. Verifique e tente novamente.</div>
         </div>
     </section>
 
     <script>
         document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault(); // Impede a página de recarregar
+            e.preventDefault();
             
-            const loginDigitado = document.getElementById('userLogin').value;
+            const input = document.getElementById('userLogin');
+            const loginDigitado = input.value;
             const loginCorreto = "@testegratisgameflix";
+            const btn = document.getElementById('btnSubmit');
+            const btnText = document.getElementById('btnText');
+            const loader = document.getElementById('loader');
             const erroDisplay = document.getElementById('msgErro');
-            
+
+            input.classList.remove('shake-input');
+            erroDisplay.style.display = "none";
+
             if(loginDigitado === loginCorreto) {
-                // REDIRECIONAMENTO AQUI
-                // Se for outra página no seu PC, coloque o nome do arquivo, ex: "pagina2.html"
-                // Se for um site externo, coloque o link completo, ex: "https://google.com"
-                window.location.href = "proxima_pagina.html"; 
+                btn.disabled = true;
+                btnText.innerText = "CONECTANDO";
+                loader.style.display = "inline-block";
+
+                setTimeout(() => {
+                    window.location.href = "proxima_pagina.html"; 
+                }, 2000);
+
             } else {
-                // Se o login estiver errado, mostra o aviso
+                if ("vibrate" in navigator) {
+                    navigator.vibrate([80, 50, 80]);
+                }
+                
+                input.classList.add('shake-input');
                 erroDisplay.style.display = "block";
-                document.getElementById('userLogin').style.borderColor = "#ffa00a";
+                
+                setTimeout(() => input.classList.remove('shake-input'), 500);
             }
         });
     </script>
