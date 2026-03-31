@@ -1223,33 +1223,30 @@ body.modal-open { overflow: hidden; }
     z-index: 10000 !important;
 }
 
-/* 3. A DIV que envolve o vídeo (O PROBLEMA DEVE ESTAR AQUI) */
+/* --- RESOLUÇÃO DEFINITIVA DO VÍDEO --- */
 .modal-hero {
     position: relative;
     width: 100%;
-    min-height: 300px; /* Garante que ela tenha altura */
-    aspect-ratio: 16 / 9; /* Mantém o formato de vídeo */
-    background: transparent !important; /* Remove qualquer fundo preto que possa estar por cima */
-    overflow: visible !important; 
+    height: 480px; /* Isso dá a altura que faltava para o vídeo aparecer */
+    background: #000;
+    overflow: hidden;
+    z-index: 1;
 }
 
-/* 4. O Vídeo em si */
 #gameVideo {
-    position: relative;
-    display: block !important;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100% !important;
     height: 100% !important;
-    z-index: 10001 !important; /* Coloca o vídeo na camada mais alta de todas */
     border: none;
+    display: block;
+    z-index: 10;
 }
 
-/* 5. O botão de fechar */
-.close-modal {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    z-index: 10002 !important; /* O "X" fica acima do vídeo */
-    color: white;
-    font-size: 35px;
-    cursor: pointer;
+/* Ajuste para celular */
+@media (max-width: 768px) {
+    .modal-hero {
+        height: 250px; 
+    }
 }
