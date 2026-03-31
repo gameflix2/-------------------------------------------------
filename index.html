@@ -171,7 +171,7 @@
           <img src="https://cdn1.epicgames.com/offer/a14a02aa3c8143729605eaf7c93d7501/EGS_Battlefield6_BattlefieldStudios_S2_1200x1600-a88625a836120c55650c83d17a010c25" class="poster-img" alt="Capa">
         </div>
 
-  <div class="card-container" onclick="openGamePage('Resident Evil Requiem', 'Lançamento Exclusivo.', 'quEnu8EWL3Q')">
+        <div class="card-container" onclick="openModal('Resident Evil Requiem', 'Lançamento Exclusivo.', 'SEU_LINK_DO_CLOUDINARY_AQUI')">
   <span class="rank-number">2</span>
   <img src="https://cdn.loaded.com/496x700/media/catalog/product/r/e/resident_evil_requiem_cdkeys_1.png" class="poster-img" alt="Capa">
 </div>
@@ -406,10 +406,10 @@ TODO SITE COM 70% DE DESCONTO - OFERTA DE LANÇAMENTO!</div>
 </div>
     </div>
 
-  <div class="netflix-modal" id="netflixModal">
+  j7nuclass="netflix-modal" id="netflixModal">
     <div class="modal-content">
       <span class="modal-close" onclick="closeModal()">×</span>
-      <iframe id="modalVideo" class="modal-video" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      <iframe id="gameVideo" class="modal-video" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
       <div class="modal-info">
         <h2 id="modalTitle"></h2>
         <p id="modalDesc"></p>
@@ -475,8 +475,16 @@ TODO SITE COM 70% DE DESCONTO - OFERTA DE LANÇAMENTO!</div>
     <div class="game-modal-container">
         <span class="close-modal" onclick="closeGamePage()">&times;</span>
         
-        <div class="modal-hero" id="modalVideo">
-            </div>
+       <div class="modal-hero">
+    <iframe id="gameVideo"
+        width="100%"
+        height="100%"
+        frameborder="0"
+        allow="autoplay; encrypted-media"
+        allowfullscreen>
+    </iframe>
+</div>
+            
 
         <div class="modal-body">
             <h1 id="modalTitle">Nome do Jogo</h1>
