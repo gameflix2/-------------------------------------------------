@@ -1220,3 +1220,34 @@ body.modal-open { overflow: hidden; }
   width: 100%;
   height: 100%;
 }
+
+/* Garante que o contentor do vídeo não tenha fundos que cubram o iframe */
+.modal-video-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* Mantém a proporção 16:9 */
+    background: #000; /* Fundo preto apenas enquanto carrega */
+    overflow: hidden;
+}
+
+/* O ajuste principal: z-index e posição */
+#gameVideo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Coloca o vídeo numa camada base */
+    border: none;
+}
+
+/* Garante que o botão de fechar fique SEMPRE por cima de tudo */
+.close-modal {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    z-index: 100; /* Valor alto para não sumir atrás do vídeo */
+    cursor: pointer;
+    color: white;
+    font-size: 2rem;
+}
