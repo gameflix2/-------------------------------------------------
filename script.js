@@ -68,8 +68,17 @@ function openModal(title, desc, videoSrc) {
 
   // LÓGICA DE VÍDEO (Mantendo sua estrutura original)
   if (videoSrc.includes("youtube.com") || videoSrc.includes("youtu.be") || videoSrc.length < 15) {
-    const youtubeId = videoSrc.includes("v=") ? videoSrc.split("v=")[1] : videoSrc;
-    iframe.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=0&controls=1&rel=0`;
+    let youtubeId = "";
+
+if (videoSrc.includes("v=")) {
+  youtubeId = videoSrc.split("v=")[1].split("&")[0];
+} else if (videoSrc.includes("youtu.be")) {
+  youtubeId = videoSrc.split("youtu.be/")[1].split("?")[0];
+} else {
+  youtubeId = videoSrc;
+}
+
+iframe.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=0&controls=1&rel=0`;
   } else {
     iframe.src = videoSrc; 
   }
@@ -102,9 +111,13 @@ function closeModal(){
 }
 
 /* Fecha o modal clicando fora dele (na parte escura) */
-document.getElementById("netflixModal").addEventListener("click", e => {
-  if(e.target.id === "netflixModal") closeModal();
-});
+const netflixModal = document.getElementById("netflixModal");
+
+if (netflixModal) {
+  netflixModal.addEventListener("click", e => {
+    if(e.target.id === "netflixModal") closeModal();
+  });
+}
 
 /* --- LÓGICA DE TROCA DO BANNER (TUDO VOLTA AO NORMAL) --- */
 document.querySelectorAll('.free-game-trigger').forEach(card => {
@@ -158,30 +171,28 @@ document.querySelectorAll('.free-game-trigger').forEach(card => {
 /* --- LÓGICA DE LOGIN --- */
 const loginForm = document.getElementById('login-form');
 
-loginForm.addEventListener('submit', function(e) {
-  e.preventDefault(); // Impede a página de recarregar
+if (loginForm) {
+  loginForm.addEventListener('submit', function(e) {
+    e.preventDefault();
 
-  const emailInput = document.getElementById('user-email').value;
-  const passwordInput = document.getElementById('user-password').value;
+    const emailInput = document.getElementById('user-email').value;
+    const passwordInput = document.getElementById('user-password').value;
 
-  // DEFINA AQUI O EMAIL E SENHA QUE VOCÊ QUER
-  const emailCorreto = "testegratis@gameflix.com";
-  const senhaCorreta = "a";
+    const emailCorreto = "t@gameflix.com";
+    const senhaCorreta = "a";
 
-  if (emailInput === emailCorreto && passwordInput === senhaCorreta) {
-    // Esconde a tela de login
-    document.getElementById('login-screen').classList.add('hidden');
-    
-    // Opcional: Inicia o vídeo do banner após entrar
-    const bannerVideo = document.getElementById("banner-video");
-    if(bannerVideo) bannerVideo.play().catch(()=>{});
-    
-    alert("Bem-vindo a melhor plataforma de games do Brasil!");
-  } else {
-    alert("Email ou senha incorretos. Tente novamente.");
-  }
-});
+    if (emailInput === emailCorreto && passwordInput === senhaCorreta) {
+      document.getElementById('login-screen').classList.add('hidden');
 
+      const bannerVideo = document.getElementById("banner-video");
+      if(bannerVideo) bannerVideo.play().catch(()=>{});
+
+      alert("Bem-vindo!");
+    } else {
+      alert("Email ou senha incorretos.");
+    }
+  });
+}
 /* --- AJUSTE EXCLUSIVO PARA O POPUP WHATSAPP --- */
 function openWppModal() {
   const modalWpp = document.getElementById("wppModal");
@@ -208,62 +219,61 @@ window.addEventListener('click', function(event) {
     if (event.target === modalNetflix) closeModal();
 });
 
-/* --- SISTEMA DE POPUP DE VÍDEO (DEFINITIVO) --- */
+/* --- SISTEMA DE CLIQUE UNIFICADO (RESOLVENDO CONFLITO) --- */
 
-function openGamePage(title, description, videoId) {
+function openGamePage(title, videoSrc) {
     const modal = document.getElementById('gamePageModal');
-    const videoContainer = document.getElementById('modalVideo');
-    const modalTitle = document.getElementById('modalTitle');
+    const iframe = document.getElementById('gameVideo');
 
-    if (!modal || !videoContainer) {
-        console.error("Erro: Elementos do modal não encontrados no HTML!");
-        return;
-    }
+    if(!modal || !iframe) return;
 
-    // 1. Atualiza o Título
-    if (modalTitle) modalTitle.innerText = title;
+    document.getElementById('modalTitle').innerText = title;
 
-    // 2. Limpa e Insere o Vídeo (Usando link que funciona em qualquer lugar)
-    const cleanId = videoId.trim();
-    videoContainer.innerHTML = `
-        <iframe 
-            width="100%" 
-            height="100%" 
-            src="https://www.youtube.com/embed/${cleanId}?autoplay=1&rel=0&modestbranding=1" 
-            frameborder="0" 
-            allow="autoplay; encrypted-media; picture-in-picture" 
-            allowfullscreen
-            style="border: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-        </iframe>`;
+    iframe.src = `https://www.youtube.com/embed/${videoSrc}?autoplay=1&mute=0`;
 
-    // 3. Exibe o Modal
     modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden'; // Trava o scroll do fundo
+    document.body.classList.add('modal-open');
 }
 
 function closeGamePage() {
     const modal = document.getElementById('gamePageModal');
-    if (modal) {
+    const iframe = document.getElementById('gameVideo');
+
+    if(modal && iframe) {
         modal.style.display = 'none';
-        document.getElementById('modalVideo').innerHTML = ""; // Para o som do vídeo
-        document.body.style.overflow = 'auto'; // Devolve o scroll
+        document.body.classList.remove('modal-open');
+        iframe.src = "";
     }
 }
-
-/* --- GERENCIADOR DE CLIQUES (O QUE FAZ O CARD FUNCIONAR) --- */
 document.addEventListener('click', function(e) {
-    const card = e.target.closest('.game-card, .card-container');
-    
-    if (card) {
-        // Se o card já tem onclick manual (como o seu Resident Evil), não faz nada aqui
-        if (card.hasAttribute('onclick')) return; 
 
-        e.preventDefault();
-        e.stopPropagation();
-
-        const title = card.querySelector('img')?.getAttribute('alt') || "Jogo GAMEFLIX";
-        const videoId = card.getAttribute('data-video') || "quEnu8EWL3Q"; 
-        
-        openGamePage(title, "Disponível na sua assinatura.", videoId);
+    // 🚨 BLOQUEIA TUDO ENQUANTO ESTIVER NO LOGIN
+    if (!document.getElementById('login-screen').classList.contains('hidden')) {
+        return;
     }
+
+    const card = e.target.closest('.game-card, .card-container');
+
+    // ✅ ESSENCIAL: verifica se existe card
+    if (!card) return;
+
+    if (card.classList.contains('free-game-trigger')) {
+        return;
+    }
+
+    e.preventDefault();
+    e.stopPropagation();
+    
+    let title = "Jogo Gameflix";
+
+    if (card.classList.contains('game-card')) {
+        title = card.getAttribute('alt') || "Jogo Gameflix";
+    } else {
+        title = card.querySelector('img')?.getAttribute('alt') || "Jogo Gameflix";
+    }
+    
+    const videoId = "dQw4w9WgXcQ"; 
+    
+    openGamePage(title, videoId);
+
 }, true);
